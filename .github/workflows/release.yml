@@ -25,7 +25,7 @@ jobs:
         with:
           name: docker-registry
           repository: helm
-          tag: latest
+          tag: 0.0.1
           path: docker-registry
           registry: quixpublic.azurecr.io
           registry_username: ${{ secrets.REGISTRY_USERNAME }}
