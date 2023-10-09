@@ -14,6 +14,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create folder
+        run: |
+          mkdir -p docker-registry/ && cp -R * docker-registry/
+
       - name: Chart | Push
         uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
