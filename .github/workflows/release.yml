@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    container: alpine/helm:3.11.1
+    container: quixanalytics/alpine-helm:3.11
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create folder
         run: |
-          mkdir -p docker-registry/ && cp -r * docker-registry/
+          mkdir -p docker-registry/ && rsync -av --exclude 'docker-registry' ./ docker-registry/
           helm version
           
       - name: Chart | Push
