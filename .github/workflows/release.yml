@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create folder
         run: |
-          mkdir -p docker-registry/ && rsync -av --exclude 'docker-registry' ./ docker-registry/
+          mkdir -p docker-registry/ && cp -r * docker-registry/
           helm version
           
       - name: Chart | Push
