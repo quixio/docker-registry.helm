@@ -35,7 +35,7 @@ jobs:
         with:
           name: docker-registry
           repository: helm
-          tag: env.VERSION-${{ steps.extract_branch.outputs.branch }}
+          tag: ${{env.VERSION}}-${{ steps.extract_branch.outputs.branch }}
           path: docker-registry
           registry: quixpublic.azurecr.io
           registry_username: ${{ secrets.REGISTRY_USERNAME }}
