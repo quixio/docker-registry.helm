@@ -19,6 +19,7 @@ jobs:
       - name: Create folder
         run: |
           mkdir -p docker-registry/ && rsync -av --exclude 'docker-registry' ./ docker-registry/
+          helm version
           
       - name: Chart | Push
         uses: appany/helm-oci-chart-releaser@v0.3.0
@@ -31,3 +32,4 @@ jobs:
           registry_username: ${{ secrets.REGISTRY_USERNAME }}
           registry_password: ${{ secrets.REGISTRY_PASSWORD }}
           update_dependencies: 'true' 
+          
