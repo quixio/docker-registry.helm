@@ -73,6 +73,11 @@ storage: filesystem
 
 # Set this to name of secret for tls certs
 # tlsSecretName: registry.docker.example.com
+
+# Use an existing secret for htpasswd authentication instead of secrets.htpasswd.
+# The secret must contain an 'htpasswd' key.
+existingSecret: ""
+
 secrets:
   haSharedSecret: ""
   htpasswd: ""
