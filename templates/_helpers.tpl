@@ -39,7 +39,7 @@ Uses existingSecret if set, otherwise the chart-managed secret.
 - name: REGISTRY_HTTP_SECRET
   valueFrom:
     secretKeyRef:
-      name: {{ template "docker-registry.fullname" . }}-secret
+      name: {{ include "docker-registry.secretName" . }}
       key: haSharedSecret
 
 {{- if or .Values.secrets.htpasswd .Values.existingSecret }}
