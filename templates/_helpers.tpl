@@ -23,6 +23,18 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 
+{{/*
+Return the secret name containing htpasswd credentials.
+Uses existingSecret if set, otherwise the chart-managed secret.
+*/}}
+{{- define "docker-registry.secretName" -}}
+{{- if .Values.existingSecret -}}
+{{- .Values.existingSecret -}}
+{{- else -}}
+{{- printf "%s-secret" (include "docker-registry.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "docker-registry.envs" -}}
 - name: REGISTRY_HTTP_SECRET
   valueFrom:
@@ -30,7 +42,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
       name: {{ template "docker-registry.fullname" . }}-secret
       key: haSharedSecret
 
-{{- if .Values.secrets.htpasswd }}
+{{- if or .Values.secrets.htpasswd .Values.existingSecret }}
 - name: REGISTRY_AUTH
   value: "htpasswd"
 - name: REGISTRY_AUTH_HTPASSWD_REALM
@@ -150,7 +162,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 - name: "{{ template "docker-registry.fullname" . }}-config"
   mountPath: "/etc/docker/registry"
 
-{{- if .Values.secrets.htpasswd }}
+{{- if or .Values.secrets.htpasswd .Values.existingSecret }}
 - name: auth
   mountPath: /auth
   readOnly: true
@@ -178,10 +190,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   configMap:
     name: {{ template "docker-registry.fullname" . }}-config
 
-{{- if .Values.secrets.htpasswd }}
+{{- if or .Values.secrets.htpasswd .Values.existingSecret }}
 - name: auth
   secret:
-    secretName: {{ template "docker-registry.fullname" . }}-secret
+    secretName: {{ include "docker-registry.secretName" . }}
     items:
     - key: htpasswd
       path: htpasswd
